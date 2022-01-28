@@ -34,17 +34,18 @@ jobs:
 
       # 압축파일 형태로 전달
       - name: Make zip file
-        run: zip -r -qq -j ./springboot-intro-build.zip ./deploy
+        run: zip -r -qq -j ./cmc-hackathon.zip ./deploy
+
       # S3 Bucket으로 copy
       - name: Deliver to AWS S3
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: $
+          AWS_SECRET_ACCESS_KEY: $
         run: |
           aws s3 cp \
           --region ap-northeast-2 \
           --acl private \
-          ./springboot-intro-build.zip s3://springboot-intro-build/
+          ./cmc-hackathon.zip s3://cmc-hackathon/
 
       # Deploy
       - name: Deploy
@@ -53,8 +54,8 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
           aws deploy create-deployment \
-          --application-name springboot-intro \
+          --application-name cmc-hackathon \
           --deployment-group-name springboot-intro-deploy-group \
           --file-exists-behavior OVERWRITE \
-          --s3-location bucket=springboot-intro-build,bundleType=zip,key=springboot-intro-build.zip \
+          --s3-location bucket=cmc-hackathon,bundleType=zip,key=cmc-hackathon.zip \
           --region ap-northeast-2
