@@ -55,7 +55,7 @@ jobs:
         run: |
           aws deploy create-deployment \
           --application-name cmc-hackathon \
-          --deployment-group-name springboot-intro-deploy-group \
+          --deployment-group-name cmc-hackathon \
           --file-exists-behavior OVERWRITE \
           --s3-location bucket=cmc-hackathon,bundleType=zip,key=cmc-hackathon.zip \
           --region ap-northeast-2
