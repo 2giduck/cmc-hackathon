@@ -5,11 +5,12 @@ on:
     branches: [ main ]
 jobs:
   build:
+    # 실행 환경 지정
     runs-on: ubuntu-latest
 
+    # Task의 sequence를 명시한다.
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
       - name: Set up JDK 11
         uses: actions/setup-java@v1
@@ -17,9 +18,44 @@ jobs:
           java-version: 11
 
       - name: Grant execute permission for gradlew
-        run: chmod +x ./gradlew
-        shell: bash
+        run: chmod +x gradlew
 
+      # Build
       - name: Build with Gradle
-        run: ./gradlew build
-        shell: bash
+        run: ./gradlew clean build
+
+      # 전송할 파일을 담을 디렉토리 생성
+      - name: Make Directory for deliver
+        run: mkdir deploy
+
+      # Jar 파일 Copy
+      - name: Copy Jar
+        run: cp ./build/libs/*.jar ./deploy/
+
+      # 압축파일 형태로 전달
+      - name: Make zip file
+        run: zip -r -qq -j ./cmc-hackathon.zip ./deploy
+
+      # S3 Bucket으로 copy
+      - name: Deliver to AWS S3
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: |
+          aws s3 cp \
+          --region ap-northeast-2 \
+          --acl private \
+          ./cmc-hackathon.zip s3://cmc-hackathon/
+
+      # Deploy
+      - name: Deploy
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: |
+          aws deploy create-deployment \
+          --application-name cmc-hackathon \
+          --deployment-group-name cmc-hackathon \
+          --file-exists-behavior OVERWRITE \
+          --s3-location bucket=cmc-hackathon,bundleType=zip,key=cmc-hackathon.zip \
+          --region ap-northeast-2
