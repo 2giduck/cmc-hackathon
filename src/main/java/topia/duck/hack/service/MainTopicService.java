@@ -11,6 +11,7 @@ import topia.duck.hack.repository.SubTopicRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,8 +35,7 @@ public class MainTopicService {
                     Long mainNo = m.getMainNo();
 
                     List<LocalDateTime> localDateTimes = subTopicRepository.getPlanDtsByMainNo(mainNo);
-                    List<LocalDate> dateList = localDateTimes.stream().map(l->l.toLocalDate()).distinct().collect(Collectors.toList());
-
+                    List<LocalDate> dateList = localDateTimes.stream().map(l->l.toLocalDate()).distinct().sorted().collect(Collectors.toList());
                     return MainTopicListRespDto.MainTopics.builder()
                             .mainNo(mainNo)
                             .startDate(m.getStartDate())
