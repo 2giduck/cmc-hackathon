@@ -5,26 +5,26 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import topia.duck.hack.controller.dto.MemberCreateReqDto;
-import topia.duck.hack.controller.dto.MemberCreateResDto;
+import topia.duck.hack.controller.dto.request.MemberCreateReqDto;
+import topia.duck.hack.controller.dto.response.MemberCreateResDto;
 import topia.duck.hack.domain.Member;
 import topia.duck.hack.repository.MemberRepository;
+import topia.duck.hack.service.MemberService;
 
 @Controller
 @RequestMapping("/api/auth")
 public class MemberController {
     private final MemberRepository memberRepository;
+    private final MemberService memberService;
 
-    public MemberController(MemberRepository memberRepository) {
+    public MemberController(MemberRepository memberRepository, MemberService memberService) {
         this.memberRepository = memberRepository;
+        this.memberService = memberService;
     }
 
     @PostMapping("/login")
     public ResponseEntity<MemberCreateResDto> login(@RequestBody MemberCreateReqDto memberCreateReqDto){
-        Member member = new Member();
-        member.setDeviceId(memberCreateReqDto.getDeviceId());
-
-        Long memberNo = memberRepository.save(member);
+        Long memberNo = memberService.loginMember(memberCreateReqDto.getDeviceId());
         MemberCreateResDto memberCreateResDto = MemberCreateResDto.builder().memberNo(memberNo).build();
 
         return ResponseEntity.ok(memberCreateResDto);

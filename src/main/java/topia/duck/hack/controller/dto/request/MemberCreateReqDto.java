@@ -1,4 +1,4 @@
-package topia.duck.hack.controller.dto;
+package topia.duck.hack.controller.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
