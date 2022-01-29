@@ -30,4 +30,9 @@ public class MainTopicRepository {
         em.persist(entity);
     }
 
+    @Transactional
+    public void deleteMainTopic(Long mainNo) throws Exception{
+        queryFactory.delete(mainTopic).where(mainTopic.mainNo.eq(mainNo)).execute();
+    }
+
 }

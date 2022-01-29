@@ -38,4 +38,15 @@ public class MainTopicController {
 
         return ResponseEntity.ok().build();
     }
+
+    @DeleteMapping("/{mainNo}")
+    public ResponseEntity deleteMainTopic(@PathVariable("mainNo")Long mainNo){
+        try{
+            mainTopicRepository.deleteMainTopic(mainNo);
+        }catch(Exception e){
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
+
+        return ResponseEntity.ok().build();
+    }
 }
