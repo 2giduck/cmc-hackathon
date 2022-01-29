@@ -49,4 +49,15 @@ public class MainTopicController {
 
         return ResponseEntity.ok().build();
     }
+
+    @PutMapping("/{mainNo}")
+    public ResponseEntity putMainTopic(@PathVariable("mainNo")Long mainNo,@RequestBody MainTopicCreateDto mainTopicCreateDto){
+        try{
+            mainTopicRepository.putMainTopic(mainNo, mainTopicCreateDto.getTitle(), mainTopicCreateDto.getStartDate(), mainTopicCreateDto.getEndDate());
+        }catch(Exception e){
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
+
+        return ResponseEntity.ok().build();
+    }
 }

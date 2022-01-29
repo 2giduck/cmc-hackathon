@@ -7,6 +7,7 @@ import topia.duck.hack.domain.MainTopic;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.List;
 
 import static topia.duck.hack.domain.QMainTopic.mainTopic;
@@ -35,4 +36,11 @@ public class MainTopicRepository {
         queryFactory.delete(mainTopic).where(mainTopic.mainNo.eq(mainNo)).execute();
     }
 
+    @Transactional
+    public void putMainTopic(Long mainNo, String title, LocalDate startDate, LocalDate endDate) {
+        queryFactory.update(mainTopic)
+                .where(mainTopic.mainNo.eq(mainNo))
+                .set(mainTopic.title,(title!=null?title:mainTopic.title.toString()))
+                .execute();
+    }
 }

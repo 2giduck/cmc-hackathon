@@ -26,10 +26,10 @@ public class SubTopicCreateDto {
     private String description;
 
     @JsonProperty("latitude")
-    private double latitude;
+    private long latitude;
 
     @JsonProperty("longitude")
-    private double longitude;
+    private long longitude;
 
     @JsonProperty("address")
     private String address;
