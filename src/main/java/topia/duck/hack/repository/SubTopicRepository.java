@@ -54,4 +54,11 @@ public class SubTopicRepository {
                 .where(subTopic.subNo.eq(subNo))
                 .execute();
     }
+
+    @Transactional
+    public void deleteSubTopic(Long subNo) throws Exception{
+        queryFactory.delete(subTopic)
+                .where(subTopic.subNo.eq(subNo))
+                .execute();
+    }
 }

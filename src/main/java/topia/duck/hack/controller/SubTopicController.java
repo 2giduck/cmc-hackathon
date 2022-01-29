@@ -54,6 +54,16 @@ public class SubTopicController {
         }
 
         return ResponseEntity.ok().build();
+    }
 
+    @DeleteMapping("/{subNo}")
+    public ResponseEntity deleteSubTopic(@PathVariable("subNo")Long subNo){
+        try{
+            subTopicRepository.deleteSubTopic(subNo);
+        }catch(Exception e){
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
+
+        return ResponseEntity.ok().build();
     }
 }
