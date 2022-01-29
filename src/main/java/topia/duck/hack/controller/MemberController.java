@@ -14,11 +14,9 @@ import topia.duck.hack.service.MemberService;
 @Controller
 @RequestMapping("/api/auth")
 public class MemberController {
-    private final MemberRepository memberRepository;
     private final MemberService memberService;
 
-    public MemberController(MemberRepository memberRepository, MemberService memberService) {
-        this.memberRepository = memberRepository;
+    public MemberController(MemberService memberService) {
         this.memberService = memberService;
     }
 
