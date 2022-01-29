@@ -14,6 +14,9 @@ import java.util.List;
 @Data
 @Builder
 public class SubTopicListRespDto {
+    @JsonProperty("complete_rate")
+    private int completeRate;
+
     @JsonProperty("sub_topics")
     private List<SubTopicListRespDto.SubTopics> subTopics;
 

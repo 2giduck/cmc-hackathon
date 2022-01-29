@@ -21,8 +21,13 @@ public class SubTopicService {
     }
 
     public SubTopicListRespDto getSubTopics(Long mainNo, LocalDate date){
-        List<SubTopicListRespDto.SubTopics> subTopics =
-                subTopicRepository.getSubTopics(mainNo, date).stream()
+        List<SubTopic> subTopics = subTopicRepository.getSubTopics(mainNo, date);
+
+        int completeRate = (int)(((double)subTopics.stream().filter(s->s.isComplete()).count() /
+                (double)subTopics.size())*100);
+
+        List<SubTopicListRespDto.SubTopics> subTopicDtos =
+                subTopics.stream()
                         .map(s->{
                             SubTopicListRespDto.SubTopics subTopic = SubTopicListRespDto.SubTopics.builder()
                                     .subNo(s.getSubNo())
@@ -38,7 +43,8 @@ public class SubTopicService {
                         }).collect(Collectors.toList());
 
         //DTO
-        SubTopicListRespDto subTopicListRespDto = SubTopicListRespDto.builder().subTopics(subTopics).build();
+        SubTopicListRespDto subTopicListRespDto = SubTopicListRespDto.builder()
+                .completeRate(completeRate).subTopics(subTopicDtos).build();
 
         return subTopicListRespDto;
     }
