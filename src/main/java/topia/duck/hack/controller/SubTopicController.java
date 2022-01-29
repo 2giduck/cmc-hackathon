@@ -3,8 +3,10 @@ package topia.duck.hack.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import topia.duck.hack.controller.dto.request.StatusReqDto;
 import topia.duck.hack.controller.dto.request.SubTopicCreateDto;
 import topia.duck.hack.controller.dto.response.SubTopicListRespDto;
+import topia.duck.hack.repository.SubTopicRepository;
 import topia.duck.hack.service.SubTopicService;
 
 import java.time.LocalDate;
@@ -14,9 +16,11 @@ import java.time.format.DateTimeFormatter;
 @RequestMapping("/api/travel/sub-topics")
 public class SubTopicController {
     private final SubTopicService subTopicService;
+    private final SubTopicRepository subTopicRepository;
 
-    public SubTopicController(SubTopicService subTopicService) {
+    public SubTopicController(SubTopicService subTopicService, SubTopicRepository subTopicRepository) {
         this.subTopicService = subTopicService;
+        this.subTopicRepository = subTopicRepository;
     }
 
     @GetMapping
@@ -34,6 +38,17 @@ public class SubTopicController {
             subTopicService.createSubTopic(subTopicCreateDto.getMainNo(), subTopicCreateDto.getTitle(),
                     subTopicCreateDto.getPlanDt(), subTopicCreateDto.getDescription(), subTopicCreateDto.getLatitude(),
                     subTopicCreateDto.getLongitude(), subTopicCreateDto.getAddress());
+        }catch(Exception e){
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{subNo}/status")
+    public ResponseEntity changeStatus(@PathVariable("subNo")Long subNo, @RequestBody StatusReqDto statusReqDto){
+        try{
+            subTopicRepository.changeStatus(subNo, statusReqDto.isComplete());
         }catch(Exception e){
             return ResponseEntity.internalServerError().body(e.getMessage());
         }

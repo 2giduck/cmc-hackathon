@@ -46,4 +46,12 @@ public class SubTopicRepository {
     public void createSubTopic(SubTopic subTopic) throws Exception{
         em.persist(subTopic);
     }
+
+    @Transactional
+    public void changeStatus(Long subNo, boolean isComplete) throws Exception{
+        queryFactory.update(subTopic)
+                .set(subTopic.isComplete, isComplete)
+                .where(subTopic.subNo.eq(subNo))
+                .execute();
+    }
 }
