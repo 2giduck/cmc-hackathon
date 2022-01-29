@@ -41,4 +41,9 @@ public class SubTopicRepository {
                 .fetchAll()
                 .fetch();
     }
+
+    @Transactional
+    public void createSubTopic(SubTopic subTopic) throws Exception{
+        em.persist(subTopic);
+    }
 }

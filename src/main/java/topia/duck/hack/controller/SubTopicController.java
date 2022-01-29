@@ -2,9 +2,8 @@ package topia.duck.hack.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import topia.duck.hack.controller.dto.request.SubTopicCreateDto;
 import topia.duck.hack.controller.dto.response.SubTopicListRespDto;
 import topia.duck.hack.service.SubTopicService;
 
@@ -27,5 +26,19 @@ public class SubTopicController {
         SubTopicListRespDto subTopicListRespDto = subTopicService.getSubTopics(mainNo, localDate);
 
         return ResponseEntity.ok(subTopicListRespDto);
+    }
+
+    @PostMapping
+    public ResponseEntity createSubTopic(@RequestBody SubTopicCreateDto subTopicCreateDto){
+        try{
+            subTopicService.createSubTopic(subTopicCreateDto.getMainNo(), subTopicCreateDto.getTitle(),
+                    subTopicCreateDto.getPlanDt(), subTopicCreateDto.getDescription(), subTopicCreateDto.getLatitude(),
+                    subTopicCreateDto.getLongitude(), subTopicCreateDto.getAddress());
+        }catch(Exception e){
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
+
+        return ResponseEntity.ok().build();
+
     }
 }
