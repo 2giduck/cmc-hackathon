@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import topia.duck.hack.controller.dto.request.MainTopicCreateDto;
 import topia.duck.hack.controller.dto.response.MainTopicListRespDto;
-import topia.duck.hack.domain.MainTopic;
 import topia.duck.hack.repository.MainTopicRepository;
 import topia.duck.hack.service.MainTopicService;
 

@@ -9,7 +9,9 @@ import topia.duck.hack.domain.SubTopic;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import static topia.duck.hack.domain.QSubTopic.subTopic;
@@ -25,6 +27,17 @@ public class SubTopicRepository {
         return queryFactory.select(subTopic.planDt)
                 .from(subTopic)
                 .where(subTopic.mainTopic.mainNo.eq(mainNo))
+                .fetchAll()
+                .fetch();
+    }
+
+    @Transactional
+    public List<SubTopic> getSubTopics(Long mainNo, LocalDate date){
+        return queryFactory.selectFrom(subTopic)
+                .where(subTopic.mainTopic.mainNo.eq(mainNo), subTopic.planDt.between(
+                        date.atStartOfDay(),
+                        LocalDateTime.of(date, LocalTime.MAX).withNano(0)
+                ))
                 .fetchAll()
                 .fetch();
     }
