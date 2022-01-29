@@ -61,4 +61,22 @@ public class SubTopicRepository {
                 .where(subTopic.subNo.eq(subNo))
                 .execute();
     }
+
+    @Transactional
+    public SubTopic getSubTopic(Long subNo){
+        return queryFactory.selectFrom(subTopic).where(subTopic.subNo.eq(subNo)).fetchOne();
+    }
+
+    @Transactional
+    public void putSubTopic(Long subNo, String title, LocalDateTime planDt, String description, Double latitude,
+                            Double longitude, String address) throws Exception{
+        SubTopic subTopic = getSubTopic(subNo);
+
+        if(title!=null) subTopic.setTitle(title);
+        if(planDt!=null) subTopic.setPlanDt(planDt);
+        if(description!=null) subTopic.setDescription(description);
+        if(latitude!=null) subTopic.setLatitude(latitude);
+        if(longitude!=null) subTopic.setLongitude(longitude);
+        if(address!=null) subTopic.setAddress(address);
+    }
 }

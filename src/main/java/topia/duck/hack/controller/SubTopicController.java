@@ -3,6 +3,7 @@ package topia.duck.hack.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import topia.duck.hack.controller.dto.request.MainTopicCreateDto;
 import topia.duck.hack.controller.dto.request.StatusReqDto;
 import topia.duck.hack.controller.dto.request.SubTopicCreateDto;
 import topia.duck.hack.controller.dto.response.SubTopicListRespDto;
@@ -60,6 +61,17 @@ public class SubTopicController {
     public ResponseEntity deleteSubTopic(@PathVariable("subNo")Long subNo){
         try{
             subTopicRepository.deleteSubTopic(subNo);
+        }catch(Exception e){
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{subNo}")
+    public ResponseEntity putSubTopic(@PathVariable("subNo")Long subNo,@RequestBody SubTopicCreateDto subTopicCreateDto){
+        try{
+            subTopicRepository.putSubTopic(subNo, subTopicCreateDto.getTitle(), subTopicCreateDto.getPlanDt(), subTopicCreateDto.getDescription(), subTopicCreateDto.getLatitude(), subTopicCreateDto.getLongitude(), subTopicCreateDto.getAddress());
         }catch(Exception e){
             return ResponseEntity.internalServerError().body(e.getMessage());
         }
