@@ -25,4 +25,9 @@ public class MainTopicRepository {
                 .fetch();
     }
 
+    @Transactional
+    public void createMainTopic(MainTopic entity){
+        em.persist(entity);
+    }
+
 }
