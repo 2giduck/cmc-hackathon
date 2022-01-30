@@ -23,6 +23,7 @@ public class MainTopicRepository {
     public List<MainTopic> getMainTopics(Long memberNo){
         return queryFactory.selectFrom(mainTopic)
                 .where(mainTopic.member.memberNo.eq(memberNo))
+                .orderBy(mainTopic.startDate.desc())
                 .fetchAll()
                 .fetch();
     }
